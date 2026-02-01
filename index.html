@@ -11,14 +11,14 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Magic Hat Link | Rainbow Family">
     <meta property="og:description" content="Support the Rainbow Family Magic Hat with every Amazon purchase — at no extra cost to you. Amazon gives back 1-3% on every sale.">
-    <meta property="og:image" content="https://magichatlink.com/og-image.png">
-    <meta property="og:url" content="https://magichatlink.com">
+    <meta property="og:image" content="https://magichat.one/og-image.png">
+    <meta property="og:url" content="https://magichat.one/">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Magic Hat Link | Rainbow Family">
     <meta name="twitter:description" content="Support the Rainbow Family Magic Hat with every Amazon purchase — at no extra cost to you.">
-    <meta name="twitter:image" content="https://magichatlink.com/og-image.png">
+    <meta name="twitter:image" content="https://magichat.one/og-image.png">
     
     <!-- Favicon (hat emoji as SVG data URI) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎩</text></svg>">
@@ -66,22 +66,22 @@
         }
 
         html, body {
-            height: 100%;
-            overflow: hidden;
+            min-height: 100%;
         }
 
         body {
             font-family: 'Quicksand', -apple-system, sans-serif;
             background: var(--bg-dark);
             color: var(--text-primary);
-            background-image: 
+            background-image:
                 radial-gradient(ellipse 100% 60% at 20% 0%, rgba(218, 119, 242, 0.12), transparent),
                 radial-gradient(ellipse 80% 50% at 80% 10%, rgba(116, 192, 252, 0.1), transparent),
                 radial-gradient(ellipse 60% 40% at 50% 100%, rgba(255, 212, 59, 0.08), transparent);
+            background-attachment: fixed;
         }
 
         .app-container {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             max-width: 680px;
@@ -257,7 +257,7 @@
         }
 
         .output-area.visible {
-            max-height: 200px;
+            max-height: 500px;
             opacity: 1;
             margin-top: var(--space-md);
         }
@@ -957,6 +957,130 @@
             0%, 100% { box-shadow: 0 0 0 0 rgba(105, 219, 124, 0); }
             50% { box-shadow: 0 0 20px 10px rgba(105, 219, 124, 0.3); }
         }
+
+        /* Commissions Section */
+        .commissions-section {
+            margin-top: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: var(--space-md);
+        }
+
+        .commissions-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .commissions-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .commissions-date {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .commissions-table-wrapper {
+            overflow-x: auto;
+            margin: 0 calc(-1 * var(--space-md));
+            padding: 0 var(--space-md);
+        }
+
+        .commissions-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .commissions-table th {
+            text-align: left;
+            padding: 10px 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .commissions-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+
+        .commissions-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .commissions-table tr:hover td {
+            background: var(--bg-hover);
+        }
+
+        .product-name {
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.4;
+            max-width: 300px;
+        }
+
+        .product-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            color: var(--bg-dark);
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        .stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-number.zero {
+            color: var(--text-muted);
+        }
+
+        .stat-number.positive {
+            color: var(--success);
+        }
+
+        .total-row {
+            background: var(--bg-input);
+            font-weight: 600;
+        }
+
+        .total-row td {
+            color: var(--text-primary);
+            border-top: 2px solid var(--border);
+        }
+
+        .commissions-empty {
+            text-align: center;
+            padding: var(--space-lg);
+            color: var(--text-muted);
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -1202,6 +1326,30 @@
             </section>
         </main>
 
+        <!-- Recent Commissions Section -->
+        <section class="commissions-section" id="commissionsSection">
+            <div class="commissions-header">
+                <div class="commissions-title">
+                    <span>📊</span>
+                    Recent Commissions
+                </div>
+                <div class="commissions-date" id="commissionsDate">Updated weekly</div>
+            </div>
+            <div class="commissions-table-wrapper">
+                <table class="commissions-table" id="commissionsTable">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th style="text-align: center;">Total Earned</th>
+                        </tr>
+                    </thead>
+                    <tbody id="commissionsBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer class="footer">
             <p class="footer-text">
@@ -1220,7 +1368,7 @@
 
     <script>
         // Configuration
-        const AFFILIATE_TAG = 'crystalrockma-20';
+        const AFFILIATE_TAG = 'magichatone-20';
 
         const TRACKING_PARAMS = [
             'ref', 'ref_', 'pf_rd_p', 'pf_rd_r', 'pf_rd_s', 'pf_rd_t', 'pf_rd_i',
@@ -1566,6 +1714,100 @@
                 }
             });
         }
+
+        // Commissions Data - Easy to update by pasting raw data
+        // Format: Product Name | Total Earned
+        const COMMISSIONS_DATA = `
+iKKEGOL Mini 2-Port RJ45 Network Key-Press Switch Splitter Selector Box 100M 2-in 1-Out or 1-in 2-Out	$0.00
+Moxita 10ft - 1/2 inch Cord Protector Cable Sleeve Split Wire Loom Tubing for Power Cord Audio USB Cable, Cord Sleeve Cable Management for TV Computer	$0.00
+RJ45 Coupler, Ethernet Network Cable in line Coupler for Cat7/Cat6/Cat5e/Cat5, Ethernet Network Cable Extender Female to Female (4 Pcs)	$0.00
+`;
+
+        // Parse and display commissions
+        function parseCommissionsData(rawData) {
+            const lines = rawData.trim().split('\n');
+            if (lines.length < 1) return [];
+
+            const products = [];
+            let currentProduct = null;
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                const parts = line.split('\t');
+
+                if (parts.length >= 2) {
+                    // Save previous product if exists
+                    if (currentProduct) {
+                        products.push(currentProduct);
+                    }
+
+                    // New product with name and earnings
+                    currentProduct = {
+                        name: parts[0].trim(),
+                        earned: parts[1].trim()
+                    };
+                } else if (currentProduct && parts.length === 1) {
+                    // This is a continuation of the product name
+                    currentProduct.name += ' ' + parts[0];
+                }
+            }
+
+            if (currentProduct) {
+                products.push(currentProduct);
+            }
+
+            return products;
+        }
+
+        function renderCommissions() {
+            const tbody = document.getElementById('commissionsBody');
+            const products = parseCommissionsData(COMMISSIONS_DATA);
+
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2" class="commissions-empty">No commissions data available yet. Check back soon!</td></tr>';
+                return;
+            }
+
+            let totalEarned = 0;
+
+            tbody.innerHTML = products.map(product => {
+                // Parse earnings (remove $ and convert to number)
+                const earnedValue = parseFloat(product.earned.replace('$', '').replace(',', '')) || 0;
+                totalEarned += earnedValue;
+
+                const isZero = earnedValue === 0;
+
+                return `
+                    <tr>
+                        <td>
+                            <span class="product-name">${escapeHtml(product.name)}</span>
+                        </td>
+                        <td style="text-align: center;"><span class="stat-number ${isZero ? 'zero' : 'positive'}">${product.earned}</span></td>
+                    </tr>
+                `;
+            }).join('') + `
+                <tr class="total-row">
+                    <td>TOTAL</td>
+                    <td style="text-align: center;"><span class="stat-number ${totalEarned === 0 ? 'zero' : 'positive'}">$${totalEarned.toFixed(2)}</span></td>
+                </tr>
+            `;
+
+            // Update the date
+            const dateElement = document.getElementById('commissionsDate');
+            const now = new Date();
+            dateElement.textContent = 'Updated: ' + now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize commissions table on load
+        renderCommissions();
     </script>
 </body>
 </html>

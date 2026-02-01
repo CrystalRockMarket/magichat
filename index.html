@@ -552,6 +552,117 @@
         .legend-dot.dao { background: var(--green); }
         .legend-dot.server { background: var(--indigo); }
 
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dashed var(--text-muted);
+        }
+
+        .tooltip::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            white-space: normal;
+            width: 280px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-2px);
+            border: 6px solid transparent;
+            border-top-color: var(--border);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 100;
+        }
+
+        .tooltip:hover::before,
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip:hover::after {
+            transform: translateX(-50%) translateY(2px);
+        }
+
+        /* Tooltip bottom variant for top-positioned elements */
+        .tooltip-bottom {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip-bottom::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            white-space: normal;
+            width: 250px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .tooltip-bottom::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(2px);
+            border: 6px solid transparent;
+            border-bottom-color: var(--border);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 1000;
+        }
+
+        .tooltip-bottom:hover::before,
+        .tooltip-bottom:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(4px);
+        }
+
+        .tooltip-bottom:hover::after {
+            transform: translateX(-50%) translateY(2px);
+        }
+
         /* FAQ Panel */
         .faq-list {
             display: flex;
@@ -856,7 +967,7 @@
                 <span class="logo-icon">🎩</span>
                 <h1>MagicHat.one</h1>
             </div>
-            <div class="total-earned-badge">
+            <div class="total-earned-badge tooltip-bottom" data-tooltip="Check back every sunday when this total is updated to see your weeks purchases.">
                 <span class="label">Earned</span>
                 <span class="amount">$1.20</span>
             </div>
@@ -945,8 +1056,9 @@
                     <!-- How It Works Panel -->
                     <div class="tab-panel active" id="how-it-works-panel">
                         <div class="panel-content how-it-works">
-                            <p>When you shop through Magic Hat links, Amazon gives back 1-3%. You pay the same price — nothing changes for you. The money goes straight to feeding the family.</p>
-                            
+                            <p>Turn any amazon purchase into some Magic Hat money! When you shop through the search above, MagicHat.one gets 1-3% commision. You pay the same price — but we all get fed. The money goes into Magic Hat during nationals each year.</p>
+                            <p>TRANSPARNCY IS KEY - we have nothing to hide, 100% of all all commissions earned follow the breakdown shown below, and anyone who wants to see the account can.</p>
+                            <p>NOTE - Using this once before doing your amazon shopping is usually enough to earn MagicHat credit for all your purchases.  You do not need to search each item through MagicHat.one, just once per trip to amazon.</p>
                             <div class="distribution-bar">
                                 <div class="distribution-segment magic-hat">80%</div>
                                 <div class="distribution-segment dao">15%</div>
@@ -960,7 +1072,7 @@
                                 </div>
                                 <div class="legend-item">
                                     <span class="legend-dot dao"></span>
-                                    <span>Katuah DAO</span>
+                                    <span class="tooltip" data-tooltip="Katuah DAO (Decentralized Autonomous Organization) is an experiement. All funds are spent for the family, voted on by the family. If successfull, Katuah DAO will birth other regional DAOs with funding from projects like this.">Katuah DAO</span>
                                 </div>
                                 <div class="legend-item">
                                     <span class="legend-dot server"></span>
@@ -976,13 +1088,13 @@
                             <div class="faq-list">
                                 <div class="faq-item">
                                     <button class="faq-question">
-                                        <span>Will I see how much I earned?</span>
+                                        <span>When will I see how much I earned?</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                                         </svg>
                                     </button>
                                     <div class="faq-answer">
-                                        <p>We're working on transparency. It takes a few days for Amazon to report earnings, but select family will have full account access for verification.</p>
+                                        <p>We're working on automating the process but for now we update earnings once weekly. It takes a few days for Amazon to report earnings, but select family will have full account access for verification.  Check back soon!  The homepage should be showing recent commissions by mid Feb</p>
                                     </div>
                                 </div>
 
@@ -994,7 +1106,7 @@
                                         </svg>
                                     </button>
                                     <div class="faq-answer">
-                                        <p>A Katuah member for now, soon an elder, and eventually an LLC governed by regional family representatives.</p>
+                                        <p>I do (https://www.facebook.com/mikeosborne42/)</p>
                                     </div>
                                 </div>
 
@@ -1006,7 +1118,7 @@
                                         </svg>
                                     </button>
                                     <div class="faq-answer">
-                                        <p>During the first week of Nationals each year, our team contributes the year's earnings directly to Magic Hat at the gathering.</p>
+                                        <p>During the first week of Nationals each year, our team contributes the year's earnings directly to Magic Hat at the gathering.  Once the 501(3)(c) is formed, we may distribute funds to kitchens etc before nationals begins.</p>
                                     </div>
                                 </div>
 
@@ -1018,7 +1130,7 @@
                                         </svg>
                                     </button>
                                     <div class="faq-answer">
-                                        <p>Handing this off to regional family representatives from across the country to govern decisions together.</p>
+                                        <p>Continue deleloping projects like that benefit rainbow.</p>
                                     </div>
                                 </div>
                             </div>

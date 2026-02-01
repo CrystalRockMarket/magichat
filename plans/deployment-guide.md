@@ -23,23 +23,53 @@ ssh user@your-server-ip
 
 ## Step 2: Clone the Repository
 
-Navigate to the web root directory and clone:
+For **magichat.one** serving from root (`/`), you have two options:
+
+### Option A: Clone Directly to Web Root (Simplest)
+
+If `/var/www/html` is your web root and it's empty (or you can empty it):
 
 ```bash
-# Navigate to Apache web root (adjust if your web root differs)
-cd /var/www
+# Navigate to web root
+cd /var/www/html
 
-# Clone the repository
-sudo git clone https://github.com/yourusername/RainbowMagicHatPage.git magichatlink
+# Remove default Apache index if it exists
+sudo rm -f index.html
+
+# Clone the repository contents directly here (using dot to clone into current directory)
+sudo git clone https://github.com/yourusername/RainbowMagicHatPage.git .
 
 # Set proper ownership (replace www-data with your Apache user if different)
-sudo chown -R www-data:www-data /var/www/magichatlink
+sudo chown -R www-data:www-data /var/www/html
 
 # Set proper permissions
-sudo chmod -R 755 /var/www/magichatlink
+sudo chmod -R 755 /var/www/html
 ```
 
-**Note:** If using a different web root like `/var/www/html`, adjust paths accordingly.
+### Option B: Clone to Subfolder + DocumentRoot (Recommended)
+
+Keep files organized in a subfolder but serve from root:
+
+```bash
+# Navigate to /var/www
+cd /var/www
+
+# Clone into magichat folder
+sudo git clone https://github.com/yourusername/RainbowMagicHatPage.git magichat
+
+# Set proper ownership
+sudo chown -R www-data:www-data /var/www/magichat
+sudo chmod -R 755 /var/www/magichat
+```
+
+Then in your Apache config (Step 3), set:
+```apache
+DocumentRoot /var/www/magichat
+```
+
+**Which option to choose?**
+- **Option A** if you only have one website on this server
+- **Option B** if you might add more sites later (cleaner organization)
 
 ---
 
@@ -51,13 +81,13 @@ sudo chmod -R 755 /var/www/magichatlink
 sudo nano /etc/apache2/sites-available/magichatlink.conf
 ```
 
-Add the following configuration (replace `your-domain.com` with your actual domain):
+Add the following configuration for **magichat.one**:
 
 ```apache
 <VirtualHost *:80>
-    ServerName your-domain.com
-    ServerAlias www.your-domain.com
-    DocumentRoot /var/www/magichatlink
+    ServerName magichat.one
+    ServerAlias www.magichat.one
+    DocumentRoot /var/www/magichat
 
     # Enable directory indexing for the main page
     DirectoryIndex index.html
@@ -86,7 +116,7 @@ Add the following configuration (replace `your-domain.com` with your actual doma
         ExpiresByType image/jpeg "access plus 1 month"
     </IfModule>
 
-    <Directory /var/www/magichatlink>
+    <Directory /var/www/magichat>
         Options -Indexes +FollowSymLinks
         AllowOverride All
         Require all granted
@@ -133,8 +163,8 @@ sudo yum install -y certbot python3-certbot-apache
 ### Obtain SSL Certificate
 
 ```bash
-# Replace with your actual domain
-sudo certbot --apache -d your-domain.com -d www.your-domain.com
+# For magichat.one
+sudo certbot --apache -d magichat.one -d www.magichat.one
 ```
 
 Follow the prompts:
@@ -171,23 +201,23 @@ sudo systemctl status apache2
 
 ### Test HTTP to HTTPS Redirect
 ```bash
-curl -I http://your-domain.com
+curl -I http://magichat.one
 ```
 Should return a 301 redirect to HTTPS.
 
 ### Test HTTPS is Working
 ```bash
-curl -I https://your-domain.com
+curl -I https://magichat.one
 ```
 Should return 200 OK.
 
 ### Verify SSL Certificate
 ```bash
-openssl s_client -connect your-domain.com:443 -servername your-domain.com </dev/null 2>/dev/null | openssl x509 -noout -dates
+openssl s_client -connect magichat.one:443 -servername magichat.one </dev/null 2>/dev/null | openssl x509 -noout -dates
 ```
 
 ### Check Website in Browser
-1. Visit `https://your-domain.com`
+1. Visit `https://magichat.one`
 2. Verify the padlock icon appears (secure connection)
 3. Test the Magic Hat link conversion functionality
 
@@ -198,7 +228,7 @@ openssl s_client -connect your-domain.com:443 -servername your-domain.com </dev/
 After deployment, your server should have:
 
 ```
-/var/www/magichatlink/
+/var/www/magichat/     # DocumentRoot for magichat.one
 ├── index.html          # Main entry point
 ├── css/
 │   └── styles.css      # Stylesheet
@@ -229,8 +259,8 @@ sudo tail -f /var/log/apache2/error.log
 ### Permission Denied Errors
 ```bash
 # Fix ownership
-sudo chown -R www-data:www-data /var/www/magichatlink
-sudo chmod -R 755 /var/www/magichatlink
+sudo chown -R www-data:www-data /var/www/magichat
+sudo chmod -R 755 /var/www/magichat
 ```
 
 ### SSL Certificate Issues
@@ -249,10 +279,10 @@ sudo certbot --apache -d your-domain.com
 ### 403 Forbidden Error
 ```bash
 # Check directory permissions
-ls -la /var/www/magichatlink
+ls -la /var/www/magichat
 
 # Ensure index.html exists
-ls -la /var/www/magichatlink/index.html
+ls -la /var/www/magichat/index.html
 ```
 
 ### CSS/JS Not Loading (404 Errors)
@@ -268,7 +298,7 @@ These are relative paths and should work if the repository structure is preserve
 
 ### Update the Website
 ```bash
-cd /var/www/magichatlink
+cd /var/www/magichat
 sudo git pull origin main
 sudo chown -R www-data:www-data .
 ```
